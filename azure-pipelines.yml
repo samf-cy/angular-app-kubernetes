@@ -26,16 +26,16 @@ stages:
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        imageName: image
+        imageName: ang
         tags: |
           $(tag)
     - task: Docker@2
-      displayName: 'Push the auth-api Docker image to Dockerhub'
+      displayName: 'Push the image to Dockerhub'
       inputs:
         containerRegistry: 'Docker Hub'
         repository: 'amsf9619/ang'
         command: 'push'
-        imageName: 'image'
+        imageName: 'ang'
       
     - task: CopyFiles@2
       inputs:
