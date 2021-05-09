@@ -9,6 +9,7 @@ resources:
 - repo: self
 
 variables:
+  ImageName: 'amsf9619/ang:$(Build.BuildId)'
   tag: '$(Build.BuildId)'
 
 stages:
@@ -25,6 +26,7 @@ stages:
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        imageName: image
         tags: |
           $(tag)
     - task: Docker@2
@@ -33,7 +35,7 @@ stages:
         containerRegistry: 'Docker Hub'
         repository: 'amsf9619/ang'
         command: 'push'
-        imageName: 'auth-api'
+        imageName: 'image'
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) '
     - task: CopyFiles@2
       inputs:
