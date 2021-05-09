@@ -22,21 +22,24 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build frontend image
       inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'amsf9619 / ang'
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-        imageName: ang
+        imageName: 'ang'
         tags: |
           $(tag)
     - task: Docker@2
-      displayName: 'Push the image to Dockerhub'
+      displayName: 'Push the Frontend Docker image to Dockerhub'
       inputs:
         containerRegistry: 'Docker Hub'
         repository: 'amsf9619/ang'
         command: 'push'
         imageName: 'ang'
-      
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) 
+
     - task: CopyFiles@2
       inputs:
         Contents: 'deployment.azure.yaml'
