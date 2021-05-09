@@ -27,7 +27,11 @@ stages:
         dockerfile: 'angularapptest/Dockerfile'
         tags: |
           $(tag)
-
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'amsf96'
+        command: 'push'
     - task: CopyFiles@2
       inputs:
         Contents: 'deployment.azure.yaml'
