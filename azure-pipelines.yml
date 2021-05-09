@@ -24,6 +24,16 @@ stages:
       displayName: Build an image
       inputs:
         command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        dockerfile: 'angularapptest/Dockerfile'
         tags: |
           $(tag)
+
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'deployment.azure.yaml'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
