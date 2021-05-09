@@ -28,10 +28,13 @@ stages:
         tags: |
           $(tag)
     - task: Docker@2
+      displayName: 'Push the auth-api Docker image to Dockerhub'
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: 'ang'
+        repository: 'amsf9619/ang'
         command: 'push'
+        imageName: 'auth-api'
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')) '
     - task: CopyFiles@2
       inputs:
         Contents: 'deployment.azure.yaml'
